@@ -28,6 +28,7 @@ import {
   BookOpen,
   GitCompare,
   ArrowUpRight,
+  Palette,
 } from 'lucide-react';
 import {
   AiProviderConfig,
@@ -46,6 +47,12 @@ import {
   InlineErrorState,
   Skeleton,
 } from '@/components/ui/Primitives';
+import {
+  BackgroundThemeOption,
+  CodeLensBackgroundCanvas,
+  FontPairingId,
+  ThemeStudioModal,
+} from '@/components/ui/ThemeStudioModal';
 import { CommandPalette } from '@/components/CommandPalette';
 import { OverviewView } from '@/components/dashboard/OverviewView';
 import { FileTreeExplorer } from '@/components/FileTreeExplorer';
@@ -99,6 +106,20 @@ export default function CodeLensApp() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+
+  // Background Collection & Font Pairing State
+  const [bgThemeId, setBgThemeId] =
+    useState<BackgroundThemeOption['id']>('aurora-wave');
+  const [fontPairingId, setFontPairingId] =
+    useState<FontPairingId>('technical');
+  const [bgOpacity, setBgOpacity] = useState<number>(0.45);
+  const [themeStudioOpen, setThemeStudioOpen] = useState(false);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-font-pairing', fontPairingId);
+    }
+  }, [fontPairingId]);
 
   // Modals
   const [createProjectModalOpen, setCreateProjectModalOpen] = useState(false);
@@ -457,19 +478,24 @@ export default function CodeLensApp() {
   // --- LOGIN / REGISTRATION SCREEN ---
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#09090B] bg-codelens-canvas flex items-center justify-center px-4 py-12 relative overflow-hidden">
-        {/* Precision Architectural Grid + Dot-Matrix Overlay */}
-        <div className="pointer-events-none absolute inset-0 bg-codelens-grid opacity-80" />
-        <div className="pointer-events-none absolute inset-0 bg-codelens-dots opacity-60" />
-
-        {/* Ambient Obsidian Aurora Light Blooms */}
-        <div
-          className="pointer-events-none absolute -top-24 left-1/4 w-[680px] h-[360px] opacity-25 blur-[120px]"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(139,92,246,0.55) 0%, rgba(59,130,246,0.2) 45%, rgba(9,9,11,0) 75%)',
-          }}
+      <div className="min-h-screen bg-[#09090B] flex items-center justify-center px-4 py-12 relative overflow-hidden">
+        {/* High-Resolution Curated Background Canvas */}
+        <CodeLensBackgroundCanvas
+          themeId={bgThemeId}
+          imageOpacity={bgOpacity}
         />
+
+        {/* Top-Right Background & Typography Studio Trigger */}
+        <div className="fixed top-4 right-4 z-30">
+          <button
+            type="button"
+            onClick={() => setThemeStudioOpen(true)}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#141418]/90 hover:bg-[#18181C] border border-[#8B5CF6]/40 text-xs font-medium text-[#F4F4F5] shadow-cl-card transition"
+          >
+            <Palette className="w-3.5 h-3.5 text-[#A78BFA]" />
+            <span>Background &amp; Fonts</span>
+          </button>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -658,6 +684,17 @@ export default function CodeLensApp() {
             </div>
           </div>
         </motion.div>
+
+        <ThemeStudioModal
+          isOpen={themeStudioOpen}
+          onClose={() => setThemeStudioOpen(false)}
+          activeThemeId={bgThemeId}
+          onChangeThemeId={setBgThemeId}
+          activeFontId={fontPairingId}
+          onChangeFontId={setFontPairingId}
+          imageOpacity={bgOpacity}
+          onChangeImageOpacity={setBgOpacity}
+        />
       </div>
     );
   }
@@ -729,11 +766,17 @@ export default function CodeLensApp() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#09090B] bg-codelens-canvas text-[#F4F4F5] flex flex-col">
+    <div className="min-h-screen bg-[#09090B] text-[#F4F4F5] flex flex-col relative">
+      {/* High-Resolution Curated Background Canvas */}
+      <CodeLensBackgroundCanvas
+        themeId={bgThemeId}
+        imageOpacity={bgOpacity}
+      />
+
       {/* ==================================================
           TOP BAR (Section 4)
          ================================================== */}
-      <header className="h-12 shrink-0 border-b border-[#27272A] bg-[#09090B]/90 backdrop-blur-md px-4 flex items-center justify-between gap-4 sticky top-0 z-30">
+      <header className="h-12 shrink-0 border-b border-[#27272A] bg-[#09090B]/70 backdrop-blur-xl px-4 flex items-center justify-between gap-4 sticky top-0 z-30">
         {/* Left: Brand + Mobile Menu + Breadcrumb */}
         <div className="flex items-center gap-3 min-w-0">
           <button
@@ -794,8 +837,18 @@ export default function CodeLensApp() {
           </kbd>
         </button>
 
-        {/* Right: Help, Notifications, User Avatar */}
+        {/* Right: Background & Fonts Studio, Help, Notifications, User Avatar */}
         <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => setThemeStudioOpen(true)}
+            title="Switch Background Image & Font Pairing"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#8B5CF6]/15 hover:bg-[#8B5CF6]/25 border border-[#8B5CF6]/35 text-xs font-medium text-[#A78BFA] transition"
+          >
+            <Palette className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">Themes &amp; Fonts</span>
+          </button>
+
           <button
             type="button"
             onClick={() => setCommandOpen(true)}
@@ -1005,6 +1058,9 @@ export default function CodeLensApp() {
               projects={projects}
               reviews={reviews}
               activeProvider={activeProvider}
+              activeThemeId={bgThemeId}
+              activeFontId={fontPairingId}
+              onOpenThemeStudio={() => setThemeStudioOpen(true)}
               onCreateProjectClick={() => setCreateProjectModalOpen(true)}
               onOpenProject={(projectId) => {
                 setActiveProjectId(projectId);
@@ -1566,6 +1622,18 @@ export default function CodeLensApp() {
           }}
         />
       )}
+
+      {/* Background Collection & Font Pairing Studio Modal */}
+      <ThemeStudioModal
+        isOpen={themeStudioOpen}
+        onClose={() => setThemeStudioOpen(false)}
+        activeThemeId={bgThemeId}
+        onChangeThemeId={setBgThemeId}
+        activeFontId={fontPairingId}
+        onChangeFontId={setFontPairingId}
+        imageOpacity={bgOpacity}
+        onChangeImageOpacity={setBgOpacity}
+      />
     </div>
   );
 }
