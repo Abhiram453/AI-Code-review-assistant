@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg-primary: #09090B;
+  --bg-secondary: #0F0F12;
+  --surface: #141418;
+  --surface-elevated: #18181C;
+  --border: #27272A;
+  --primary: #8B5CF6;
+  --primary-hover: #7C3AED;
+  --ai-accent: #A78BFA;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --critical: #EF4444;
+  --info: #3B82F6;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+}
+
+* {
+  border-color: #27272A;
+}
+
+body {
+  background-color: #09090B;
+  color: #F4F4F5;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Precision Technical Heading Typography (Plus Jakarta Sans) */
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.025em;
+}
+
+/* Obsidian Aurora & Radial Mesh Background */
+.bg-codelens-canvas {
+  background-color: #09090B;
+  background-image:
+    radial-gradient(at 12% 8%, rgba(139, 92, 246, 0.13) 0px, transparent 48%),
+    radial-gradient(at 88% 14%, rgba(59, 130, 246, 0.09) 0px, transparent 52%),
+    radial-gradient(at 50% 95%, rgba(167, 139, 250, 0.06) 0px, transparent 58%);
+  background-attachment: fixed;
+}
+
+/* Precision 24px Dot-Matrix Canvas with Soft Radial Mask */
+.bg-codelens-dots {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.075) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 35%,
+    #000 55%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 35%,
+    #000 55%,
+    transparent 100%
+  );
+}
+
+/* Architectural 1px Technical Grid Overlay */
+.bg-codelens-grid {
+  background-size: 36px 36px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 40%,
+    #000 45%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 75% at 50% 40%,
+    #000 45%,
+    transparent 100%
+  );
+}
+
+::selection {
+  background-color: rgba(139, 92, 246, 0.28);
+  color: #F4F4F5;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
+}
