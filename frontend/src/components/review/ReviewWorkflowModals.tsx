@@ -17,6 +17,7 @@ import {
 import { AiProviderConfig, ProjectFileItem } from '@/types';
 import { Button } from '@/components/ui/Primitives';
 import { CodeLensLogo } from '@/components/ui/CodeLensLogo';
+import { AnimatedAiReviewOrb } from '@/components/ui/AnimatedIllustrations';
 
 interface ConfigureReviewModalProps {
   isOpen: boolean;
@@ -308,10 +309,7 @@ export function AiReviewProcessModal({
             transition={{ duration: 0.18 }}
             className="w-full max-w-sm rounded-xl bg-[#141418] border border-[#27272A] shadow-cl-modal p-6 text-center space-y-5"
           >
-            <div className="relative inline-flex items-center justify-center mx-auto">
-              <span className="absolute inset-0 rounded-xl bg-[#8B5CF6]/25 animate-ping" />
-              <CodeLensLogo size="lg" showText={false} />
-            </div>
+            <AnimatedAiReviewOrb />
 
             <div>
               <h3 className="text-sm font-semibold text-[#F4F4F5]">

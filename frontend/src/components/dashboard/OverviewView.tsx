@@ -16,23 +16,13 @@ import {
 } from 'lucide-react';
 import { AiProviderConfig, ProjectSummary, ReviewRecord, UserProfile } from '@/types';
 import { Button, EmptyState, SeverityBadge, StatCard } from '@/components/ui/Primitives';
-
-import { Palette } from 'lucide-react';
-import {
-  BACKGROUND_COLLECTION,
-  BackgroundThemeOption,
-  FONT_PAIRINGS,
-  FontPairingId,
-} from '@/components/ui/ThemeStudioModal';
+import { AnimatedArchitectureRadarIllustration } from '@/components/ui/AnimatedIllustrations';
 
 interface OverviewViewProps {
   user: UserProfile;
   projects: ProjectSummary[];
   reviews: ReviewRecord[];
   activeProvider?: AiProviderConfig;
-  activeThemeId?: BackgroundThemeOption['id'];
-  activeFontId?: FontPairingId;
-  onOpenThemeStudio?: () => void;
   onCreateProjectClick: () => void;
   onOpenProject: (projectId: string) => void;
   onOpenReview: (review: ReviewRecord) => void;
@@ -59,9 +49,6 @@ export function OverviewView({
   projects,
   reviews,
   activeProvider,
-  activeThemeId = 'aurora-wave',
-  activeFontId = 'technical',
-  onOpenThemeStudio,
   onCreateProjectClick,
   onOpenProject,
   onOpenReview,
@@ -85,76 +72,39 @@ export function OverviewView({
     0,
   );
 
-  const currentBg =
-    BACKGROUND_COLLECTION.find((b) => b.id === activeThemeId) ||
-    BACKGROUND_COLLECTION[0];
-  const currentFont =
-    FONT_PAIRINGS.find((f) => f.id === activeFontId) || FONT_PAIRINGS[0];
-
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      {/* Top Greeting Hero Card with High-Res Background Showcase & CTAs */}
-      <div className="relative rounded-xl border border-[#27272A] overflow-hidden p-5 shadow-cl-card">
-        <div
-          className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-45 transition-all duration-500"
-          style={{ backgroundImage: `url('${currentBg.imageUrl}')` }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(90deg, rgba(9,9,11,0.90) 0%, rgba(9,9,11,0.68) 55%, rgba(9,9,11,0.85) 100%)',
-          }}
-        />
+      {/* Top Greeting & CTAs */}
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 border-b border-[#27272A]">
+        <div>
+          <h1 className="text-xl font-semibold text-[#F4F4F5] tracking-tight">
+            Good morning, {firstName}
+          </h1>
+          <p className="text-xs text-[#A1A1AA] mt-1">
+            Review your codebase, identify risks, and ship with confidence.
+          </p>
+        </div>
 
-        <div className="relative z-10 flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[#141418]/90 border border-[#27272A] text-[10.5px] font-mono text-[#A78BFA]">
-              <Palette className="w-3 h-3" />
-              <span>Theme: {currentBg.name}</span>
-              <span className="text-[#71717A]">·</span>
-              <span>{currentFont.headingFont.split('(')[0].trim()}</span>
-            </div>
-            <h1 className="font-display text-2xl font-semibold text-[#F4F4F5] tracking-tight">
-              Good morning, {firstName}
-            </h1>
-            <p className="text-xs text-[#A1A1AA] max-w-xl">
-              Review your codebase, identify critical security and performance
-              risks, and ship with confidence.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {onOpenThemeStudio && (
-              <Button
-                variant="secondary"
-                size="sm"
-                leftIcon={<Palette className="w-3.5 h-3.5 text-[#A78BFA]" />}
-                onClick={onOpenThemeStudio}
-              >
-                Background &amp; Fonts
-              </Button>
-            )}
-            <Button
-              variant="secondary"
-              size="sm"
-              leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#A78BFA]" />}
-              onClick={() => {
-                const targetId = quickProjectId || projects[0]?.id;
-                if (targetId) onStartQuickReview(targetId, quickType);
-              }}
-            >
-              Quick Review
-            </Button>
-            <Button
-              variant="primary"
-              size="sm"
-              leftIcon={<Plus className="w-3.5 h-3.5" />}
-              onClick={onCreateProjectClick}
-            >
-              New Project
-            </Button>
-          </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#A78BFA]" />}
+            onClick={() => {
+              const targetId = quickProjectId || projects[0]?.id;
+              if (targetId) onStartQuickReview(targetId, quickType);
+            }}
+          >
+            Quick Review
+          </Button>
+          <Button
+            variant="primary"
+            size="sm"
+            leftIcon={<Plus className="w-3.5 h-3.5" />}
+            onClick={onCreateProjectClick}
+          >
+            New Project
+          </Button>
         </div>
       </div>
 
@@ -281,6 +231,8 @@ export function OverviewView({
           </h2>
 
           <div className="rounded-lg bg-[#141418] border border-[#8B5CF6]/35 shadow-cl-glow p-4 space-y-4">
+            <AnimatedArchitectureRadarIllustration />
+
             <div className="flex items-start justify-between">
               <div>
                 <h3 className="text-sm font-semibold text-[#F4F4F5] flex items-center gap-1.5">
